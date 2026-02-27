@@ -15,7 +15,7 @@ $user = file_get_contents("admin/user.txt");
 $bot = bot('getme',['bot'])->result->username;
 $soat = date('H:i');
 $sana = date("d.m.Y");
-
+$update = json_decode(file_get_contents('php://input'), true);
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
 $uri = $_SERVER['REQUEST_URI'];
@@ -3391,3 +3391,4 @@ bot('sendMessage',[
 
 
 //<---- @obito_us ---->//
+
