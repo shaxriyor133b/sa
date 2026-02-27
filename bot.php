@@ -24,7 +24,24 @@ $host_no_www = preg_replace('/^www\./', '', $host);
 $web_urlis = "$protocol://$host_no_www$folder_path/animes.php";
 
 require ("sql.php");
+// Telegram’dan kelgan update’ni o‘qish
+$update = json_decode(file_get_contents("php://input"), true);
 
+if (isset($update["message"])) {
+    $chat_id = $update["message"]["chat"]["id"];
+    $text = $update["message"]["text"] ?? "";
+
+    // Oddiy javob - kiritilgan matnni qaytaradi
+    bot('sendMessage', [
+        'chat_id' => $chat_id,
+        'text' => "Siz yozdingiz: " . htmlspecialchars($text),
+        'parse_mode' => 'HTML'
+    ]);
+}
+
+// Hech qanday muammo bo‘lmasa 200 qaytaring
+http_response_code(200);
+exit;
 function getAdmin($chat){
 $url = "https://api.telegram.org/bot".API_KEY."/getChatAdministrators?chat_id=@".$chat;
 $result = file_get_contents($url);
@@ -3371,5 +3388,6 @@ bot('sendMessage',[
 ]);
 }
 }
+
 
 //<---- @obito_us ---->//
